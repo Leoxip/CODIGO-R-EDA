@@ -1,0 +1,50 @@
+# Cargar las librerías necesarias
+library(readr)
+library(ggplot2)
+library(dplyr)
+
+# Leer los datos desde un archivo CSV
+# Se asume que el archivo contiene dos columnas de interés: 'u' (población en 1920) y 'x' (población en 1930)
+bigcity <- read_csv("C:/Users/carlo/Downloads/Tarea Analisis Multivariado/bigcity.csv", show_col_types = FALSE)
+
+# Visualizar las primeras filas de los datos para asegurarse de que se han leído correctamente
+print("Visualizando las primeras filas de los datos:")
+head(bigcity)
+
+# Realizar un resumen estadístico de las variables para entender la distribución
+print("Resumen estadístico de las variables:")
+summary(bigcity)
+
+# Visualización de la distribución de la población en 1920
+print("Distribución de la población en 1920:")
+ggplot(data = bigcity, aes(x = u)) +
+  geom_histogram(binwidth = 20, fill = "skyblue", color = "black") +
+  labs(title = "Distribución de la población en 1920", x = "Población (1920)", y = "Frecuencia") +
+  theme_minimal()
+
+# Visualización de la distribución de la población en 1930
+print("Distribución de la población en 1930:")
+ggplot(data = bigcity, aes(x = x)) +
+  geom_histogram(binwidth = 20, fill = "lightgreen", color = "black") +
+  labs(title = "Distribución de la población en 1930", x = "Población (1930)", y = "Frecuencia") +
+  theme_minimal()
+
+# Creación de un diagrama de dispersión para examinar la relación entre las poblaciones en 1920 y 1930
+print("Diagrama de dispersión entre la población en 1920 y 1930:")
+ggplot(data = bigcity, aes(x = u, y = x)) +
+  geom_point(color = "blue") +
+  labs(title = "Relación entre la población en 1920 y 1930", x = "Población en 1920", y = "Población en 1930") +
+  theme_light()
+
+# Calculando la correlación entre las poblaciones de 1920 y 1930
+correlation <- cor(bigcity$u, bigcity$x)
+print(paste("Correlación entre la población en 1920 y 1930:", round(correlation, 2)))
+
+# Adicionalmente, se puede agregar un modelo lineal al diagrama de dispersión para visualizar la tendencia
+print("Diagrama de dispersión con línea de ajuste:")
+ggplot(data = bigcity, aes(x = u, y = x)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Relación entre la población en 1920 y 1930 con línea de ajuste",
+       x = "Población en 1920", y = "Población en 1930") +
+  theme_bw()
